@@ -1,0 +1,7 @@
+.dados li.aberto::before {
+  background: green;
+}
+
+.dados li.fechado::before {
+  background: red;
+}
