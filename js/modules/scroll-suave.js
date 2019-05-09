@@ -1,35 +1,32 @@
-/**
- * Scroll suave para links internos
- */
-export default function initSmoothScroll() {
-  const linksInternos = document.querySelectorAll(
-    '[data-menu="suave"] a[href^="#"]'
-  );
+export default class SmoothScroll {
+  constructor(link, options) {
+    this.internalLinks = document.querySelectorAll(link);
 
-  function scrollToSection(event) {
+    if (options === undefined) {
+      this.options = { behavior: "smooth", block: "start" };
+    }
+
+    this.scrollToSection = this.scrollToSection.bind(this);
+  }
+
+  scrollToSection(event) {
     event.preventDefault();
-    const href = this.getAttribute("href");
+    const href = event.currentTarget.getAttribute("href");
     const section = document.querySelector(href);
 
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-    // forma alternativa
-    // const topoSection = section.offsetTop;
-    // window.scrollTo({
-    //   top: topoSection,
-    //   behavior: 'smooth',
-    // });
+    section.scrollIntoView(this.options);
   }
 
-  if (linksInternos.length) {
-    linksInternos.forEach(link => {
-      link.addEventListener("click", scrollToSection);
-    });
+  addLinkEvent() {
+    if (this.internalLinks.length) {
+      this.internalLinks.forEach(link => {
+        link.addEventListener("click", this.scrollToSection);
+      });
+    }
+  }
+
+  init() {
+    this.addLinkEvent();
+    return this;
   }
 }
-/**
- * end Scroll suave para links internos
- */
